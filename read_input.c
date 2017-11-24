@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/24 19:14:41 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/24 20:01:59 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	block_validator(char *block)
 ** closes it
 */
 
-char	**open_file(char *path)
+char	**input_to_liststr(char *path,int *list_len)
 {
 	int		ptr;
 	int		ret;
@@ -89,6 +89,8 @@ char	**open_file(char *path)
 		counter++;
 		buf = ft_strnew(21);
 	}
+	*list_len = counter;
+	free(buf);
 	list[++counter] = NULL;
 	if (close(ptr) == -1)
 	{
@@ -119,11 +121,15 @@ int print_input(char **list)
 	return (0);
 }
 
-char ***lst_to_lstmatrix(char**str_list)
+
+
+
+char ***lststr_to_lstmatrix(char**str_list)
 {
 	char ***list;
 	char **matrix;
 	char *row;
+	return (0);
 }
 
 /*
@@ -133,8 +139,16 @@ char ***lst_to_lstmatrix(char**str_list)
 int	reader(char *path)
 {
 	char **list;
-	list = open_file(path);
+	int *list_len;
+
+	list_len = (int*)malloc(sizeof(int));
+	*list_len = 0;
+
+	list = input_to_liststr(path,list_len);
 	print_input(list);
+	ft_putchar('\n');
+	ft_putnbr (*list_len);
+	ft_putchar('\n');
 	return (0);
 }
 
