@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/24 22:28:03 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/24 22:58:07 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int		block_validator(char *block)
 ** inputs the file path of the source
 ** opens it
 ** loops trough every 21 char
-** saves each buffer in its own string
 ** closes it
 */
 
@@ -93,13 +92,20 @@ int		input_length(char *path)
 	return (counter);
 }
 
-
+/*
+** takes as inputs the file path of the source and the number of blocks
+** malloc a list[size];
+** opens the source
+** loops trough every 21 char
+** saves a string in every slot of the list
+** frees the buffer
+*/
 
 char	**input_strings(char *path, int size)
 {
 	int		fd;
 	int		ret;
-	int 	b;
+	int		b;
 	char	*buf;
 	char	**output;
 
@@ -111,7 +117,7 @@ char	**input_strings(char *path, int size)
 		return (NULL);
 	while ((ret = read(fd, buf, 21)))
 	{
-		output[b]=ft_strdup(buf);
+		output[b] = ft_strdup(buf);
 		b++;
 	}
 	free(buf);
@@ -120,9 +126,14 @@ char	**input_strings(char *path, int size)
 	return (output);
 }
 
+/*
+** takes a list of strings as input
+** prints every string till the 0 memeber in the list;
+*/
+
 int		print_strings(char **str)
 {
-	while(*str != 0)
+	while (*str != 0)
 	{
 		ft_putstr(*str);
 		str++;
@@ -136,9 +147,9 @@ int		print_strings(char **str)
 
 char	***gen_matrices(int size, int m, int n)
 {
-	char ***matrix;
-	int b;
-	int i;
+	char	***matrix;
+	int		b;
+	int		i;
 
 	b = 0;
 	i = 0;
@@ -165,28 +176,27 @@ int		print_matrices(char ***matrix)
 
 	b = 0;
 	i = 0;
+	ft_putchar('\n');
 	while (matrix[b] != 0)
 	{
-		ft_putendl("------");
-		while (matrix[b][i] !=0)
-		{
-			ft_putchar('|');
-			ft_putstr(matrix[b][i++]);
-			ft_putendl("|");
-		}
+		while (matrix[b][i] != 0)
+			ft_putendl(matrix[b][i++]);
 		b++;
 		i = 0;
+		ft_putchar('\n');
 	}
-	ft_putendl("------");
-	ft_putendl(" DONE ");
+	ft_putchar('\n');
+	ft_putendl("+----+");
+	ft_putendl("|DONE|");
+	ft_putendl("+----+");
 	return (0);
 }
 
 /*
-** take a path as inputs, check his length and formal validity
+** take a lsit of matrices and a list of strings
 */
 
-int fill_matrices(char ***matrix, char **str)
+int		fill_matrices(char ***matrix, char **str)
 {
 	int b;
 	int i;
@@ -197,53 +207,52 @@ int fill_matrices(char ***matrix, char **str)
 	j = 0;
 	while (matrix[b] != 0)
 	{
-		while (matrix[b][i] !=0)
+		while (matrix[b][i] != 0)
 		{
-			while (matrix[b][i][j] !=0)
-			{
-				if (str[b][i*5+j] == '#')
-					matrix[b][i][j] = str[b][i*5+j] + 30 + b ;
-				j++;
-			}
+			while (matrix[b][i][j] != 0)
+				if (str[b][i * 5 + j++] == '#')
+					matrix[b][i][j - 1] = str[b][i * 5 + j - 1] + 30 + b;
 			i++;
 			j = 0;
 		}
+		free(str[b]);
 		b++;
 		i = 0;
 	}
+	free(str[b]);
+	free(str);
 	return (0);
 }
 
-int		reader(char *path)
+/*
+** initialization of everything
+*/
+
+int		set_up(char *path)
 {
-	int size;
-	char ***matrix;
-	char **str;
+	int		size;
+	char	***matrix;
+	char	**str;
 
 	size = 0;
-	ft_putendl("calculating length and validating");
+	ft_putendl("reading, calculating length and validating");
 	size = input_length(path);
 	if (!size)
 		ft_putendl("ERROR in reading or validating");
-	ft_putstr("number of blocks:");
+	ft_putstr("number of blocks = ");
 	ft_putnbr(size);
 	ft_putchar('\n');
-
-	ft_putendl("creating string");
-	str = input_strings(path , size);
+	ft_putendl("printing string");
+	str = input_strings(path, size);
 	if (!str)
 		ft_putendl("ERROR in moving to string input");
 	print_strings(str);
-
 	ft_putendl("generating matrices");
-	matrix = gen_matrices(size,4,4);
-
+	matrix = gen_matrices(size, 4, 4);
 	ft_putendl("filling matrices");
-	fill_matrices(matrix,str);
-
-	ft_putendl("getting matrices");
+	fill_matrices(matrix, str);
+	ft_putendl("printing matrices");
 	print_matrices(matrix);
-
 	return (0);
 }
 
@@ -259,7 +268,7 @@ int		main(int argc, char **argv)
 		ft_putendl("to much inputting, SHTAP!");
 	else
 	{
-		reader(argv[1]);
+		set_up(argv[1]);
 		return (0);
 	}
 	return (1);
