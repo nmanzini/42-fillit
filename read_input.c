@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/24 17:50:06 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/24 19:14:41 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,63 +58,83 @@ int	block_validator(char *block)
 }
 
 /*
-** inputs the file path of the source and the verbose option
+** inputs the file path of the source 
 ** opens it
 ** loops trough every 21 char
-**		vaidate them
+** saves each buffer in its own string
 ** closes it
 */
 
-int	open_file(char *path, int verbose)
+char	**open_file(char *path)
 {
 	int		ptr;
 	int		ret;
 	char	*buf;
 	int		counter;
-	int		sum;
+	char	**list;
 
+	list = (char**)malloc(sizeof(char*) * 27);
+	list[27] = NULL;
 	counter = 0;
 	ptr = open(path, O_RDONLY);
 	if (ptr == -1)
 	{
 		ft_putendl("open() FAILED");
-		return (1);
+		return (NULL);
 	}
 	buf = ft_strnew(21);
 	while ((ret = read(ptr, buf, 21)))
 	{
-		buf[ret] = 0;
+		list[counter] = buf;
 		counter++;
-		sum = block_validator(buf);
-		if (sum)
-			ft_putendl("UNVALID CHAR");
-		if (verbose)
-		{
-			ft_putstr("\nblock # = ");
-			ft_putnbr(counter);
-			ft_putchar('\n');
-			ft_putstr("wrong = ");
-			ft_putnbr(sum);
-			ft_putchar('\n');
-			ft_putstr(buf);
-		}
+		buf = ft_strnew(21);
 	}
+	list[++counter] = NULL;
 	if (close(ptr) == -1)
 	{
 		ft_putendl("Close() FAILED");
-		return (1);
+		return (NULL);
 	}
-	return (counter);
+	return (list);
 }
+
+/*
+** take a list and prints the input
+*/
+
+int print_input(char **list)
+{
+	int i;
+
+	i = 0;
+	while (list[i] != NULL)
+	{
+		ft_putstr("block #");
+		ft_putnbr(i);
+		ft_putchar('\n');
+		ft_putstr(list[i]);
+		i++;
+		(*list)++;
+	}
+	return (0);
+}
+
+char ***lst_to_lstmatrix(char**str_list)
+{
+	char ***list;
+	char **matrix;
+	char *row;
+}
+
+/*
+** take a path as inputs and opens it
+*/
 
 int	reader(char *path)
 {
-	int pieces;
-
-	pieces = open_file(path, 1);
-	ft_putstr("Found ");
-	ft_putnbr(pieces);
-	ft_putendl(" Pieces");
+	char **list;
+	list = open_file(path);
+	print_input(list);
 	return (0);
 }
 
