@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/24 21:21:36 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/24 21:30:12 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ char	***gen_matrices(int block_num, int m, int n)
 ** take a path as inputs, check his length and formal validity
 */
 
+
 int		get_matrix(char ***matrix)
 {
 	int b;
@@ -151,7 +152,7 @@ int		get_matrix(char ***matrix)
 
 int fill_matrix(char ***matrix)
 {
-	
+
 }
 
 int		reader(char *path)
