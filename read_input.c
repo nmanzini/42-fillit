@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/24 17:41:34 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/24 17:50:06 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	block_validator(char *block)
 }
 
 /*
-** inputs the file path of the source and the verbose option 
+** inputs the file path of the source and the verbose option
 ** opens it
 ** loops trough every 21 char
 **		vaidate them
@@ -70,10 +70,11 @@ int	open_file(char *path, int verbose)
 	int		ptr;
 	int		ret;
 	char	*buf;
-	int		counter = 0;
-	int 	sum;
+	int		counter;
+	int		sum;
 
-	ptr = open(path,O_RDONLY);
+	counter = 0;
+	ptr = open(path, O_RDONLY);
 	if (ptr == -1)
 	{
 		ft_putendl("open() FAILED");
@@ -110,20 +111,19 @@ int	reader(char *path)
 {
 	int pieces;
 
-	pieces = open_file(path,1);
-	ft_putstr ("Found ");
-	ft_putnbr (pieces);
+	pieces = open_file(path, 1);
+	ft_putstr("Found ");
+	ft_putnbr(pieces);
 	ft_putendl(" Pieces");
 	return (0);
 }
 
-
-int	main (int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	if (argc < 2)
-		ft_putendl_fd("usage: fillit source_file",2);
+		ft_putendl("usage: fillit source_file");
 	else if (argc > 2)
-		ft_putendl_fd("to much inputting, SHTAP!",2);
+		ft_putendl("to much inputting, SHTAP!");
 	else
 	{
 		reader(argv[1]);
