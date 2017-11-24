@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/24 14:35:49 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/24 15:49:34 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,27 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
+int block_validator(char *block)
+{
+	int i;
+	int dots;
+	int hash;
+	int newline;
+	int sum;
+
+	i = 0;
+	dots = 0;
+	hash = 0;
+	newline = 0;
+	sum = 0;
+	while (i < 20)
+	{
+		sum += block[i];
+		i++;
+	}
+	return (sum);
+}
 
 int open_file(char *path, int verbose)
 {
@@ -25,7 +46,7 @@ int open_file(char *path, int verbose)
 	ptr = open(path,O_RDONLY);
 	if (ptr == -1)
 	{
-		ft_putendl_fd("open() FAILED",2);
+		ft_putendl_fd("\nopen() FAILED",2);
 		return (1);
 	}
 	buf = ft_strnew(21);
@@ -35,8 +56,10 @@ int open_file(char *path, int verbose)
 		counter++;
 		if (verbose)
 		{
-			ft_putstr("block number ");
+			ft_putstr("\nblock # =");
 			ft_putnbr(counter);
+			ft_putstr(". sum = ");
+			ft_putnbr(block_validator(buf));
 			ft_putchar('\n');
 			ft_putstr(buf);
 		}
