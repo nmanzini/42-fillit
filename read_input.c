@@ -6,9 +6,13 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/24 20:01:59 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/24 21:21:36 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+** gcc read_input.c libft.a -o fillit  && ./fillit  "sample.fillit"
+*/
 
 #include "./includes/libft.h"
 #include <sys/types.h>
@@ -34,7 +38,7 @@
 **		returns (3) if not
 */
 
-int	block_validator(char *block)
+int		block_validator(char *block)
 {
 	int i;
 	int sum;
@@ -58,101 +62,124 @@ int	block_validator(char *block)
 }
 
 /*
-** inputs the file path of the source 
+** inputs the file path of the source
 ** opens it
 ** loops trough every 21 char
 ** saves each buffer in its own string
 ** closes it
 */
 
-char	**input_to_liststr(char *path,int *list_len)
+int		input_length(char *path)
 {
 	int		ptr;
 	int		ret;
 	char	*buf;
 	int		counter;
-	char	**list;
 
-	list = (char**)malloc(sizeof(char*) * 27);
-	list[27] = NULL;
 	counter = 0;
 	ptr = open(path, O_RDONLY);
 	if (ptr == -1)
-	{
-		ft_putendl("open() FAILED");
-		return (NULL);
-	}
+		return (0);
 	buf = ft_strnew(21);
 	while ((ret = read(ptr, buf, 21)))
 	{
-		list[counter] = buf;
+		if (block_validator(buf))
+			return (0);
 		counter++;
-		buf = ft_strnew(21);
 	}
-	*list_len = counter;
 	free(buf);
-	list[++counter] = NULL;
 	if (close(ptr) == -1)
-	{
-		ft_putendl("Close() FAILED");
-		return (NULL);
-	}
-	return (list);
+		return (0);
+	return (counter);
 }
 
 /*
-** take a list and prints the input
+** allocate space for all the matrices and initialize them with dots.
 */
 
-int print_input(char **list)
+char	***gen_matrices(int block_num, int m, int n)
 {
+	char ***matrix;
+	int b;
 	int i;
 
+	b = 0;
 	i = 0;
-	while (list[i] != NULL)
+	matrix = (char***)malloc(sizeof(char**) * (block_num + 1));
+	while (b < block_num)
 	{
-		ft_putstr("block #");
-		ft_putnbr(i);
-		ft_putchar('\n');
-		ft_putstr(list[i]);
-		i++;
-		(*list)++;
+		matrix[b] = (char**)malloc(sizeof(char*) * (m + 1));
+		while (i < 4)
+		{
+			matrix[b][i] = ft_strnew(n);
+			matrix[b][i] = "....";
+			i++;
+		}
+		b++;
+		i = 0;
 	}
-	return (0);
+	return (matrix);
 }
 
+/*
+** take a path as inputs, check his length and formal validity
+*/
 
-
-
-char ***lststr_to_lstmatrix(char**str_list)
+int		get_matrix(char ***matrix)
 {
-	char ***list;
-	char **matrix;
-	char *row;
+	int b;
+	int i;
+
+	b = 0;
+	i = 0;
+	while (matrix[b] != 0)
+	{
+		ft_putendl("----");
+		while (matrix[b][i] !=0)
+			ft_putendl(matrix[b][i++]);
+		b++;
+		i = 0;
+	}
+	ft_putendl("----");
+	ft_putendl("DONE");
 	return (0);
 }
 
 /*
-** take a path as inputs and opens it
+** take a path as inputs, check his length and formal validity
 */
 
-int	reader(char *path)
+int fill_matrix(char ***matrix)
 {
-	char **list;
-	int *list_len;
+	
+}
 
-	list_len = (int*)malloc(sizeof(int));
-	*list_len = 0;
+int		reader(char *path)
+{
+	int block_num;
+	char ***matrix;
 
-	list = input_to_liststr(path,list_len);
-	print_input(list);
+	block_num = 0;
+	block_num = input_length(path);
+	if (!block_num)
+		ft_putendl("ERROR in validation or reading");
+	ft_putendl("number of blocks:");
+	ft_putnbr(block_num);
 	ft_putchar('\n');
-	ft_putnbr (*list_len);
-	ft_putchar('\n');
+
+	ft_putendl("generating matrices");
+	matrix = gen_matrices(block_num,4,4);
+	ft_putendl("getting matrices");
+	get_matrix(matrix);
+
 	return (0);
 }
 
-int	main(int argc, char **argv)
+/*
+** main file that take a path as only arguments or return error.
+*/
+
+int		main(int argc, char **argv)
 {
 	if (argc < 2)
 		ft_putendl("usage: fillit source_file");
