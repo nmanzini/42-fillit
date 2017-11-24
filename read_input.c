@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/24 21:34:53 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/24 22:28:03 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,33 +71,70 @@ int		block_validator(char *block)
 
 int		input_length(char *path)
 {
-	int		ptr;
+	int		fd;
 	int		ret;
 	char	*buf;
 	int		counter;
 
 	counter = 0;
-	ptr = open(path, O_RDONLY);
-	if (ptr == -1)
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
 		return (0);
 	buf = ft_strnew(21);
-	while ((ret = read(ptr, buf, 21)))
+	while ((ret = read(fd, buf, 21)))
 	{
 		if (block_validator(buf))
 			return (0);
 		counter++;
 	}
 	free(buf);
-	if (close(ptr) == -1)
+	if (close(fd) == -1)
 		return (0);
 	return (counter);
+}
+
+
+
+char	**input_strings(char *path, int size)
+{
+	int		fd;
+	int		ret;
+	int 	b;
+	char	*buf;
+	char	**output;
+
+	b = 0;
+	buf = ft_strnew(21);
+	output = (char**)malloc(sizeof(char*) * (size + 1));
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (NULL);
+	while ((ret = read(fd, buf, 21)))
+	{
+		output[b]=ft_strdup(buf);
+		b++;
+	}
+	free(buf);
+	if (close(fd) == -1)
+		return (NULL);
+	return (output);
+}
+
+int		print_strings(char **str)
+{
+	while(*str != 0)
+	{
+		ft_putstr(*str);
+		str++;
+	}
+	return (0);
 }
 
 /*
 ** allocate space for all the matrices and initialize them with dots.
 */
 
-char	***gen_matrices(int block_num, int m, int n)
+char	***gen_matrices(int size, int m, int n)
 {
 	char ***matrix;
 	int b;
@@ -105,16 +142,12 @@ char	***gen_matrices(int block_num, int m, int n)
 
 	b = 0;
 	i = 0;
-	matrix = (char***)malloc(sizeof(char**) * (block_num + 1));
-	while (b < block_num)
+	matrix = (char***)malloc(sizeof(char**) * (size + 1));
+	while (b < size)
 	{
 		matrix[b] = (char**)malloc(sizeof(char*) * (m + 1));
 		while (i < 4)
-		{
-			matrix[b][i] = ft_strnew(n);
-			matrix[b][i] = "....";
-			i++;
-		}
+			matrix[b][i++] = ft_strdup("....");
 		b++;
 		i = 0;
 	}
@@ -122,10 +155,10 @@ char	***gen_matrices(int block_num, int m, int n)
 }
 
 /*
-** take a path as inputs, check his length and formal validity
+** take a list of matrices as input and prints them
 */
 
-int		get_matrix(char ***matrix)
+int		print_matrices(char ***matrix)
 {
 	int b;
 	int i;
@@ -134,14 +167,18 @@ int		get_matrix(char ***matrix)
 	i = 0;
 	while (matrix[b] != 0)
 	{
-		ft_putendl("----");
+		ft_putendl("------");
 		while (matrix[b][i] !=0)
-			ft_putendl(matrix[b][i++]);
+		{
+			ft_putchar('|');
+			ft_putstr(matrix[b][i++]);
+			ft_putendl("|");
+		}
 		b++;
 		i = 0;
 	}
-	ft_putendl("----");
-	ft_putendl("DONE");
+	ft_putendl("------");
+	ft_putendl(" DONE ");
 	return (0);
 }
 
@@ -149,28 +186,63 @@ int		get_matrix(char ***matrix)
 ** take a path as inputs, check his length and formal validity
 */
 
-int fill_matrix(char ***matrix)
+int fill_matrices(char ***matrix, char **str)
 {
+	int b;
+	int i;
+	int j;
 
+	b = 0;
+	i = 0;
+	j = 0;
+	while (matrix[b] != 0)
+	{
+		while (matrix[b][i] !=0)
+		{
+			while (matrix[b][i][j] !=0)
+			{
+				if (str[b][i*5+j] == '#')
+					matrix[b][i][j] = str[b][i*5+j] + 30 + b ;
+				j++;
+			}
+			i++;
+			j = 0;
+		}
+		b++;
+		i = 0;
+	}
+	return (0);
 }
 
 int		reader(char *path)
 {
-	int block_num;
+	int size;
 	char ***matrix;
+	char **str;
 
-	block_num = 0;
-	block_num = input_length(path);
-	if (!block_num)
-		ft_putendl("ERROR in validation or reading");
-	ft_putendl("number of blocks:");
-	ft_putnbr(block_num);
+	size = 0;
+	ft_putendl("calculating length and validating");
+	size = input_length(path);
+	if (!size)
+		ft_putendl("ERROR in reading or validating");
+	ft_putstr("number of blocks:");
+	ft_putnbr(size);
 	ft_putchar('\n');
 
+	ft_putendl("creating string");
+	str = input_strings(path , size);
+	if (!str)
+		ft_putendl("ERROR in moving to string input");
+	print_strings(str);
+
 	ft_putendl("generating matrices");
-	matrix = gen_matrices(block_num,4,4);
+	matrix = gen_matrices(size,4,4);
+
+	ft_putendl("filling matrices");
+	fill_matrices(matrix,str);
+
 	ft_putendl("getting matrices");
-	get_matrix(matrix);
+	print_matrices(matrix);
 
 	return (0);
 }
