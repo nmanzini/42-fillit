@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/24 22:58:07 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/25 00:34:59 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,9 @@ int		input_length(char *path)
 ** frees the buffer
 */
 
+
+
+
 char	**input_strings(char *path, int size)
 {
 	int		fd;
@@ -133,6 +136,7 @@ char	**input_strings(char *path, int size)
 
 int		print_strings(char **str)
 {
+	ft_putchar('\n');
 	while (*str != 0)
 	{
 		ft_putstr(*str);
@@ -158,7 +162,7 @@ char	***gen_matrices(int size, int m, int n)
 	{
 		matrix[b] = (char**)malloc(sizeof(char*) * (m + 1));
 		while (i < 4)
-			matrix[b][i++] = ft_strdup("....");
+			matrix[b][i++] = ft_strdup(",,,,");
 		b++;
 		i = 0;
 	}
@@ -180,12 +184,14 @@ int		print_matrices(char ***matrix)
 	while (matrix[b] != 0)
 	{
 		while (matrix[b][i] != 0)
-			ft_putendl(matrix[b][i++]);
+		{
+			ft_putendl(matrix[b][i]);
+			i++;
+		}
 		b++;
 		i = 0;
 		ft_putchar('\n');
 	}
-	ft_putchar('\n');
 	ft_putendl("+----+");
 	ft_putendl("|DONE|");
 	ft_putendl("+----+");
@@ -210,8 +216,10 @@ int		fill_matrices(char ***matrix, char **str)
 		while (matrix[b][i] != 0)
 		{
 			while (matrix[b][i][j] != 0)
+			{
 				if (str[b][i * 5 + j++] == '#')
 					matrix[b][i][j - 1] = str[b][i * 5 + j - 1] + 30 + b;
+			}
 			i++;
 			j = 0;
 		}
@@ -223,6 +231,62 @@ int		fill_matrices(char ***matrix, char **str)
 	free(str);
 	return (0);
 }
+
+// int analyze_matrix(char **row)
+// {
+// 	int i;
+
+// 	i = 0;
+// 	while ( row[i] != 0)
+// 	{
+// 		if (!strcmp(row[i],",,,,") )
+// 		{
+// 			ft_putnbr(i);
+// 			ft_putendl("row to cancel");
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+// int		clean_row_matrices(char ***matrix)
+// {
+// 	int b;
+// 	int i;
+// 	int j;
+
+// 	b = 0;
+// 	i = 0;
+// 	j = 0;
+// 	while (matrix[b] != 0)
+// 	{
+// 		while (matrix[b][i] != 0)
+// 		{
+// 			if (!strcmp(matrix[b][i],",,,,") )
+// 			{
+// 				while (matrix[b][i][j] != 0)
+// 				{
+// 					matrix[b][i][j] = matrix[b][i + 1][j];
+// 					j++;
+// 				}
+// 				ft_putnbr(b);
+// 				ft_putnbr(i);
+// 				ft_putendl(" row to cancel");
+// 			}
+// 			else
+// 				while (matrix[b][i][j] != 0)
+// 				{
+// 					matrix[b][i][j] = matrix[b][i][j];
+// 					j++;
+// 				}
+// 			i++;
+// 			j = 0;
+// 		}
+// 		b++;
+// 		i = 0;
+// 	}
+// 	return (0);
+// }
 
 /*
 ** initialization of everything
@@ -253,6 +317,9 @@ int		set_up(char *path)
 	fill_matrices(matrix, str);
 	ft_putendl("printing matrices");
 	print_matrices(matrix);
+	// ft_putendl("cleaning matrices");
+	// clean_row_matrices(matrix);
+	// print_matrices(matrix);
 	return (0);
 }
 
