@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/27 16:31:40 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/27 17:38:33 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 ** gcc read_input.c libft.a -o fillit  && ./fillit  "sample.fillit"
 */
 
-#include "./includes/libft.h"
 #include "lib_fillit.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
 /*
 ** inputs a string of 21 chars and returns 0 if is a valid representation of a
@@ -159,11 +155,13 @@ char	***gen_matrices(int size, int m, int n)
 	while (b < size)
 	{
 		matrix[b] = (char**)malloc(sizeof(char*) * (m + 1));
-		while (i < 4)
+		while (i < m)
 			matrix[b][i++] = ft_strdup("....");
+		matrix[b][i] = NULL;
 		b++;
 		i = 0;
 	}
+	matrix[size] = NULL;
 	return (matrix);
 }
 
@@ -318,7 +316,7 @@ int		clean_column_matrices(char ***matrix)
 ** initialization of everything
 */
 
-int		set_up(char *path)
+char	***set_up(char *path)
 {
 	int		size;
 	char	***matrix;
@@ -328,44 +326,41 @@ int		set_up(char *path)
 	ft_putendl("reading, calculating length and validating");
 	size = input_length(path);
 	if (!size)
+	{
 		ft_putendl("ERROR in reading or validating");
+		return(NULL);
+	}
 	ft_putstr("number of blocks = ");
 	ft_putnbr(size);
 	ft_putchar('\n');
-	ft_putendl("printing string");
+	// ft_putendl("printing string");
 	str = input_strings(path, size);
 	if (!str)
+	{
 		ft_putendl("ERROR in moving to string input");
-	print_strings(str);
+		return(NULL);
+	}
+	// print_strings(str);
 	ft_putendl("generating matrices");
 	matrix = gen_matrices(size, 4, 4);
+	if (!matrix)
+	{
+		ft_putendl("ERROR can't make the matrix");
+		return(NULL);
+	}
 	ft_putendl("filling matrices");
 	fill_matrices(matrix, str);
-	ft_putendl("printing matrices");
-	print_matrices(matrix);
+	// ft_putendl("printing matrices");
+	// print_matrices(matrix);
 	ft_putendl("cleaning rows matrices");
 	clean_row_matrices(matrix);
-	print_matrices(matrix);
+	// print_matrices(matrix);
 	ft_putendl("cleaning columns matrices");
 	clean_column_matrices(matrix);
+	ft_putendl("printing cleaned matrices");
 	print_matrices(matrix);
-	return (0);
+	ft_putendl("END OF SETUP");
+	return (matrix);
 }
 
-/*
-** main file that take a path as only arguments or return error.
-*/
 
-int		main(int argc, char **argv)
-{
-	if (argc < 2)
-		ft_putendl("usage: fillit source_file");
-	else if (argc > 2)
-		ft_putendl("to much inputting, SHTAP!");
-	else
-	{
-		set_up(argv[1]);
-		return (0);
-	}
-	return (1);
-}
