@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 13:12:47 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/27 17:53:41 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/27 18:59:21 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
+/*
+** main.c
+*/
 int		main(int argc, char **argv);
 /*
 ** read_input.c
@@ -40,6 +42,8 @@ int		ft_floor_sqrt(int value);
 int		num_tetra(char ***tetra);
 char	**gen_grid(int m,int n);
 int		print_grid(char **row);
+int		insert_tetra_grid(char **row, char **tetra, int x, int y);
+int		insert_checker(char **row, char **tetra, int x, int y);
 int		solve(char ***matrix);
 
 
