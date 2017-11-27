@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/27 17:38:33 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/27 17:51:59 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ char	***gen_matrices(int size, int m, int n)
 		b++;
 		i = 0;
 	}
-	matrix[size] = NULL;
+	matrix[b] = NULL;
 	return (matrix);
 }
 
