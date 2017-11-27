@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/27 13:10:36 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/27 16:23:33 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 */
 
 #include "./includes/libft.h"
+#include "lib_fillit.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -230,65 +231,95 @@ int		fill_matrices(char ***matrix, char **str)
 }
 
 /*
-** take a lsit of matrices and a list of strings
-*/
-
-int		analyze_matrix(char **row)
-{
-	int i;
-
-	i = 0;
-	while (row[i] != 0)
-	{
-		if (!strcmp(row[i], "...."))
-		{
-			ft_putnbr(i);
-			ft_putendl("row to cancel");
-		}
-		i++;
-	}
-	return (0);
-}
-
-/*
-** take a lsit of matrices and a list of strings
+** take a lsit of matrices and removes the dotted rows
 */
 
 int		clean_row_matrices(char ***matrix)
 {
 	int b;
 	int i;
-	int j;
+	int i2;
 
 	b = 0;
 	i = 0;
-	j = 0;
 	while (matrix[b] != 0)
 	{
 		while (matrix[b][i] != 0)
 		{
 			if (!strcmp(matrix[b][i], "...."))
 			{
-				while (matrix[b][i][j] != 0)
+				i2 = i--;
+				while (matrix[b][i2] != 0)
 				{
-					matrix[b][i][j] = matrix[b][i + 1][j];
-					j++;
+					matrix[b][i2] = matrix[b][i2 + 1];
+					i2++;
 				}
-				ft_putnbr(b);
-				ft_putnbr(i);
-				ft_putendl(" row to cancel");
 			}
-			else
-				while (matrix[b][i][j] != 0)
-				{
-					matrix[b][i][j] = matrix[b][i][j];
-					j++;
-				}
 			i++;
-			j = 0;
 		}
 		b++;
 		i = 0;
+	}
+	return (0);
+}
+
+/*
+** take a lsit of matrices and removes the dotted columns
+*/
+
+int		clean_column_matrices(char ***matrix)
+{
+	int b;
+	int i;
+	int j;
+	int counter;
+	int j2;
+
+
+	b = 0;
+	i = 0;
+	j = 0;
+	while (matrix[b] != 0)
+	{
+		while (matrix[b][i][j] != 0)
+		{
+			ft_putnbr(b);
+			ft_putchar('/');
+			ft_putnbr(j);
+			ft_putendl(" matrix/column controlling");
+			counter = 0;
+			i = 0;
+			while (matrix[b][i] != 0)
+			{
+				if (matrix[b][i][j] == '.' )
+					counter++;
+				i++;
+			}
+			ft_putnbr(i);
+			ft_putchar(',');
+			ft_putnbr(counter);
+			ft_putendl(" index,counter");
+			if (counter == i)
+			{
+				ft_putendl("^^ CANCEL");
+				i = 0;
+				while (matrix[b][i]!= 0)
+				{
+					j2 = j;
+					while (matrix[b][i][j2]!= 0)
+					{
+						matrix[b][i][j2] = matrix[b][i][j2 + 1];
+						j2++;
+					}
+					i++;
+				}
+				j--;
+			}
+			i = 0;
+			j++;
+		}
+		b++;
+		j = 0;
 	}
 	return (0);
 }
@@ -322,9 +353,12 @@ int		set_up(char *path)
 	fill_matrices(matrix, str);
 	ft_putendl("printing matrices");
 	print_matrices(matrix);
-	// ft_putendl("cleaning matrices");
-	// clean_row_matrices(matrix);
-	// print_matrices(matrix);
+	ft_putendl("cleaning rows matrices");
+	clean_row_matrices(matrix);
+	print_matrices(matrix);
+	ft_putendl("cleaning columns matrices");
+	clean_column_matrices(matrix);
+	print_matrices(matrix);
 	return (0);
 }
 
