@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/27 16:23:33 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/27 16:31:40 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,25 +283,15 @@ int		clean_column_matrices(char ***matrix)
 	{
 		while (matrix[b][i][j] != 0)
 		{
-			ft_putnbr(b);
-			ft_putchar('/');
-			ft_putnbr(j);
-			ft_putendl(" matrix/column controlling");
 			counter = 0;
-			i = 0;
 			while (matrix[b][i] != 0)
 			{
 				if (matrix[b][i][j] == '.' )
 					counter++;
 				i++;
 			}
-			ft_putnbr(i);
-			ft_putchar(',');
-			ft_putnbr(counter);
-			ft_putendl(" index,counter");
 			if (counter == i)
 			{
-				ft_putendl("^^ CANCEL");
 				i = 0;
 				while (matrix[b][i]!= 0)
 				{
