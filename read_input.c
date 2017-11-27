@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/25 00:34:59 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/27 13:10:36 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,6 @@ int		input_length(char *path)
 ** frees the buffer
 */
 
-
-
-
 char	**input_strings(char *path, int size)
 {
 	int		fd;
@@ -162,7 +159,7 @@ char	***gen_matrices(int size, int m, int n)
 	{
 		matrix[b] = (char**)malloc(sizeof(char*) * (m + 1));
 		while (i < 4)
-			matrix[b][i++] = ft_strdup(",,,,");
+			matrix[b][i++] = ft_strdup("....");
 		b++;
 		i = 0;
 	}
@@ -232,61 +229,69 @@ int		fill_matrices(char ***matrix, char **str)
 	return (0);
 }
 
-// int analyze_matrix(char **row)
-// {
-// 	int i;
+/*
+** take a lsit of matrices and a list of strings
+*/
 
-// 	i = 0;
-// 	while ( row[i] != 0)
-// 	{
-// 		if (!strcmp(row[i],",,,,") )
-// 		{
-// 			ft_putnbr(i);
-// 			ft_putendl("row to cancel");
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
+int		analyze_matrix(char **row)
+{
+	int i;
 
-// int		clean_row_matrices(char ***matrix)
-// {
-// 	int b;
-// 	int i;
-// 	int j;
+	i = 0;
+	while (row[i] != 0)
+	{
+		if (!strcmp(row[i], "...."))
+		{
+			ft_putnbr(i);
+			ft_putendl("row to cancel");
+		}
+		i++;
+	}
+	return (0);
+}
 
-// 	b = 0;
-// 	i = 0;
-// 	j = 0;
-// 	while (matrix[b] != 0)
-// 	{
-// 		while (matrix[b][i] != 0)
-// 		{
-// 			if (!strcmp(matrix[b][i],",,,,") )
-// 			{
-// 				while (matrix[b][i][j] != 0)
-// 				{
-// 					matrix[b][i][j] = matrix[b][i + 1][j];
-// 					j++;
-// 				}
-// 				ft_putnbr(b);
-// 				ft_putnbr(i);
-// 				ft_putendl(" row to cancel");
-// 			}
-// 			else
-// 				while (matrix[b][i][j] != 0)
-// 				{
-// 					matrix[b][i][j] = matrix[b][i][j];
-// 					j++;
-// 				}
-// 			i++;
-// 			j = 0;
-// 		}
-// 		b++;
-// 		i = 0;
-// 	}
-// 	return (0);
-// }
+/*
+** take a lsit of matrices and a list of strings
+*/
+
+int		clean_row_matrices(char ***matrix)
+{
+	int b;
+	int i;
+	int j;
+
+	b = 0;
+	i = 0;
+	j = 0;
+	while (matrix[b] != 0)
+	{
+		while (matrix[b][i] != 0)
+		{
+			if (!strcmp(matrix[b][i], "...."))
+			{
+				while (matrix[b][i][j] != 0)
+				{
+					matrix[b][i][j] = matrix[b][i + 1][j];
+					j++;
+				}
+				ft_putnbr(b);
+				ft_putnbr(i);
+				ft_putendl(" row to cancel");
+			}
+			else
+				while (matrix[b][i][j] != 0)
+				{
+					matrix[b][i][j] = matrix[b][i][j];
+					j++;
+				}
+			i++;
+			j = 0;
+		}
+		b++;
+		i = 0;
+	}
+	return (0);
+}
 
 /*
 ** initialization of everything
