@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 16:34:15 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/27 17:54:14 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/27 18:58:20 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int		num_tetra(char ***tetra)
 
 /*
 ** creates a square matrix filled with dots;
+** every row zero terminated, and last row equal to NULL;
 */
 
 char	**gen_grid(int m,int n)
@@ -74,6 +75,10 @@ char	**gen_grid(int m,int n)
 	return (row);
 }
 
+/*
+** prints a grid or matrix of any size
+*/
+
 int		print_grid(char **row)
 {
 	int i;
@@ -88,8 +93,55 @@ int		print_grid(char **row)
 }
 
 /*
-** calls for the solution
+** insert a certain tetra ina a grid at a certain slot
+** avoiding the '.' part of the tetra
 */
+
+int		insert_tetra_grid(char **row, char **tetra, int x, int y)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (tetra[i] != 0)
+	{
+		while (tetra[i][j] != 0)
+		{
+			if (tetra[i][j] != '.')
+			{
+				row[x + i][y + j] =  tetra[i][j];
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	return (0);
+}
+
+int		insert_checker(char **row, char **tetra, int x, int y)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (tetra[i] != 0)
+	{
+		while (tetra[i][j] != 0)
+		{
+			if (tetra[i][j] != '.' && row[x + i][y + j] != '.')
+			{
+				return (1);
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	return (0);
+}
 
 int		solve(char ***tetra)
 {
@@ -105,6 +157,17 @@ int		solve(char ***tetra)
 	ft_putendl("Generating solution grid of size min_size");
 	grid = gen_grid(min_size,min_size);
 	ft_putendl("Printing said grid");
+	print_grid(grid);
+	ft_putendl("inserting a tetra in grid");
+
+	ft_putnbr(insert_checker(grid,tetra[2],0,0));
+	ft_putchar('\n');
+	insert_tetra_grid(grid,tetra[2],0,0);
+
+	ft_putnbr(insert_checker(grid,tetra[1],2,1));
+	ft_putchar('\n');
+	insert_tetra_grid(grid,tetra[1],2,1);
+
 	print_grid(grid);
 	return (0);
 }
