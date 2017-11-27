@@ -6,13 +6,22 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 13:12:47 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/27 13:15:29 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/27 17:53:41 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIB_FILLIT_H
 # define LIB_FILLIT_H
 
+#include "./includes/libft.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+int		main(int argc, char **argv);
+/*
+** read_input.c
+*/
 int		block_validator(char *block);
 int		input_length(char *path);
 char	**input_strings(char *path, int size);
@@ -22,7 +31,16 @@ int		print_matrices(char ***matrix);
 int		fill_matrices(char ***matrix, char **str);
 int		analyze_matrix(char **row);
 int		clean_row_matrices(char ***matrix);
-int		set_up(char *path);
-int		main(int argc, char **argv);
+int		clean_column_matrices(char ***matrix);
+char	***set_up(char *path);
+/*
+** solver.c
+*/
+int		ft_floor_sqrt(int value);
+int		num_tetra(char ***tetra);
+char	**gen_grid(int m,int n);
+int		print_grid(char **row);
+int		solve(char ***matrix);
+
 
 #endif
