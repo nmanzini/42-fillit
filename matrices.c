@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 17:26:42 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/28 17:55:29 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/28 18:31:58 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int		fill_matrices(char ***matrix, char **str)
 		b++;
 		i = 0;
 	}
-	free_row(str);
+	//free_row(str);
 	return (0);
 }
 

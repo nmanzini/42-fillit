@@ -53,7 +53,7 @@
 
 
 ## Output Sample:
-Tthe program displays the smallest assembled square on the standard output. To
+The program displays the smallest assembled square on the standard output. To
 identify each Tetrimino in the square solution, a capital letter will be assigned to each
 Tetrimino, starting with ’A’ and increasing for each new Tetrimino.
 
@@ -65,6 +65,20 @@ Tetrimino, starting with ’A’ and increasing for each new Tetrimino.
 	.HDD.G
 
 # SOLUTION
+here is how the program works:
+
+### Reading the input and preparing the data
+
+* The program take the path of the input file as argument, returns usage instruction if argument is blank, error if there are more than 1 arguments.
+* main() calls setup(), here the buffer of the file reads 21 bytes while it counts and validate formally the block.
+* kowning the number of blocs a lsit of matrices (4x4) is generated and then filled with the various letters representing the different blocks.
+* then emty lines and columns are removed from the matrix, this is most probably not the best way to do this but it was the one we came up with.
+
+### Solving the problem
+
+* 
+
+
 
 
 ![Matrix Notation](https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Matrix.svg/247px-Matrix.svg.png)
