@@ -86,3 +86,7 @@ here is how the program works:
 The matrices starts at zero and the standard naming system is used (as shown in the image underneath). Every row is null terminated and the last row is NULL.
 
 ![Matrix Notation](https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Matrix.svg/247px-Matrix.svg.png)
+
+# Example
+
+![Alt text](How_To.png?raw=true "Title")
