@@ -10,6 +10,7 @@ will take a file as parameter, which contains a list of Tetriminos, and arrange 
 in order to create the smallest square possible.
 
 ## Input Sample:
+ 8 pieces represented by '#' in 4x4 squares of '.', separated by. '\n'
 
 	...#
 	...#
@@ -52,4 +53,14 @@ in order to create the smallest square possible.
 	....
 
 
-## Input Sample:
+## Output Sample:
+Tthe program displays the smallest assembled square on the standard output. To
+identify each Tetrimino in the square solution, a capital letter will be assigned to each
+Tetrimino, starting with ’A’ and increasing for each new Tetrimino.
+
+	ABBBB.
+	ACCCEE
+	AFFCEE
+	A.FFGG
+	HHHDDG
+	.HDD.G
