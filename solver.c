@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 16:34:15 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/28 11:08:22 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/28 11:52:47 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int		insert_checker(char **row, char **tetra, int x, int y)
 	return (1);
 }
 
-int		insert_complete(char **row, char **tetra, int x, int y)
+int		insert_check_complete(char **row, char **tetra, int x, int y)
 {
 	ft_putendl("cheking insertion of tetra in grid");
 	if (insert_checker(row, tetra, x, y))
@@ -158,6 +158,11 @@ int		insert_complete(char **row, char **tetra, int x, int y)
 	else
 		ft_putendl("Not possible");
 	return (0);
+}
+
+int BFS_big_fucking_solver(char **row, char ***tetra)
+{
+	
 }
 
 int		solve(char ***tetra)
@@ -175,11 +180,11 @@ int		solve(char ***tetra)
 	grid = gen_grid(min_size, min_size, '.');
 	ft_putendl("Printing said grid");
 	print_grid(grid);
-	insert_complete(grid, tetra[0], 0, 0);
+	insert_check_complete(grid, tetra[0], 0, 0);
 	print_grid(grid);
-	insert_complete(grid, tetra[0], 1, 1);
+	insert_check_complete(grid, tetra[1], 0, 1);
 	print_grid(grid);
-	insert_complete(grid, tetra[0], 2, 2);
+	insert_check_complete(grid, tetra[2], 1, 1);
 	print_grid(grid);
 	return (0);
 }

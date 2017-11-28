@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 13:12:47 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/27 18:59:21 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/28 11:30:37 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ char	**gen_grid(int m, int n, char c);
 int		print_grid(char **row);
 int		insert_tetra_grid(char **row, char **tetra, int x, int y);
 int		insert_checker(char **row, char **tetra, int x, int y);
+int		insert_check_complete(char **row, char **tetra, int x, int y);
 int		solve(char ***matrix);
 
 
