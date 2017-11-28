@@ -1,0 +1,11 @@
+To Do LIST
+ - Makefile for both the libft and the fillit
+ - free the solution grid when we go to the next size
+ 	- how to check if we leak memory (google)
+
+ - test with 26 blocks
+ - correct the messages
+ - norm
+ 	- reduce length of some function and split the files
+
+ - remove the printing in general ( comment it out only)
