@@ -28,7 +28,7 @@ int		block_validator(char *block);
 int		input_length(char *path);
 char	**input_strings(char *path, int size);
 int		print_strings(char **str);
-char	***gen_matrices(int size, int m, int n);
+char	***gen_matrices(int size, int m, int n, char c);
 int		print_matrices(char ***matrix);
 int		fill_matrices(char ***matrix, char **str);
 int		analyze_matrix(char **row);
@@ -40,7 +40,7 @@ char	***set_up(char *path);
 */
 int		ft_floor_sqrt(int value);
 int		num_tetra(char ***tetra);
-char	**gen_grid(int m,int n);
+char	**gen_grid(int m, int n, char c);
 int		print_grid(char **row);
 int		insert_tetra_grid(char **row, char **tetra, int x, int y);
 int		insert_checker(char **row, char **tetra, int x, int y);

@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 16:35:16 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/27 17:08:10 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/28 11:08:37 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ int		main(int argc, char **argv)
 		ft_putendl("to much inputting, SHTAP!");
 	else
 	{
-
 		matrices = set_up(argv[1]);
 		if (!matrices)
-			return(1);
+			return (1);
 		solve(matrices);
 		return (0);
 	}

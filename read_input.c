@@ -6,13 +6,9 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/27 17:51:59 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/28 11:10:31 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-** gcc read_input.c libft.a -o fillit  && ./fillit  "sample.fillit"
-*/
 
 #include "lib_fillit.h"
 
@@ -143,11 +139,12 @@ int		print_strings(char **str)
 ** allocate space for all the matrices and initialize them with dots.
 */
 
-char	***gen_matrices(int size, int m, int n)
+char	***gen_matrices(int size, int m, int n, char c)
 {
 	char	***matrix;
 	int		b;
 	int		i;
+	int		j;
 
 	b = 0;
 	i = 0;
@@ -156,7 +153,13 @@ char	***gen_matrices(int size, int m, int n)
 	{
 		matrix[b] = (char**)malloc(sizeof(char*) * (m + 1));
 		while (i < m)
-			matrix[b][i++] = ft_strdup("....");
+		{
+			j = 0;
+			matrix[b][i] = ft_strnew(n);
+			while (j < n)
+				matrix[b][i][j++] = c;
+			i++;
+		}
 		matrix[b][i] = NULL;
 		b++;
 		i = 0;
@@ -273,7 +276,6 @@ int		clean_column_matrices(char ***matrix)
 	int counter;
 	int j2;
 
-
 	b = 0;
 	i = 0;
 	j = 0;
@@ -284,17 +286,17 @@ int		clean_column_matrices(char ***matrix)
 			counter = 0;
 			while (matrix[b][i] != 0)
 			{
-				if (matrix[b][i][j] == '.' )
+				if (matrix[b][i][j] == '.')
 					counter++;
 				i++;
 			}
 			if (counter == i)
 			{
 				i = 0;
-				while (matrix[b][i]!= 0)
+				while (matrix[b][i] != 0)
 				{
 					j2 = j;
-					while (matrix[b][i][j2]!= 0)
+					while (matrix[b][i][j2] != 0)
 					{
 						matrix[b][i][j2] = matrix[b][i][j2 + 1];
 						j2++;
@@ -328,33 +330,28 @@ char	***set_up(char *path)
 	if (!size)
 	{
 		ft_putendl("ERROR in reading or validating");
-		return(NULL);
+		return (NULL);
 	}
 	ft_putstr("number of blocks = ");
 	ft_putnbr(size);
 	ft_putchar('\n');
-	// ft_putendl("printing string");
 	str = input_strings(path, size);
 	if (!str)
 	{
 		ft_putendl("ERROR in moving to string input");
-		return(NULL);
+		return (NULL);
 	}
-	// print_strings(str);
 	ft_putendl("generating matrices");
-	matrix = gen_matrices(size, 4, 4);
+	matrix = gen_matrices(size, 4, 4, '.');
 	if (!matrix)
 	{
 		ft_putendl("ERROR can't make the matrix");
-		return(NULL);
+		return (NULL);
 	}
 	ft_putendl("filling matrices");
 	fill_matrices(matrix, str);
-	// ft_putendl("printing matrices");
-	// print_matrices(matrix);
 	ft_putendl("cleaning rows matrices");
 	clean_row_matrices(matrix);
-	// print_matrices(matrix);
 	ft_putendl("cleaning columns matrices");
 	clean_column_matrices(matrix);
 	ft_putendl("printing cleaned matrices");
@@ -362,5 +359,3 @@ char	***set_up(char *path)
 	ft_putendl("END OF SETUP");
 	return (matrix);
 }
-
-
