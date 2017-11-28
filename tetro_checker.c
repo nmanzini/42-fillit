@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tetro_checker.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jroguszk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 13:32:15 by jroguszk          #+#    #+#             */
-/*   Updated: 2017/11/28 11:25:12 by jroguszk         ###   ########.fr       */
+/*   Updated: 2017/11/28 19:42:42 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,12 @@ int		validate_tetro(char **str, int i, int j)
 	return (k);
 }
 
-int		tetro_checker(char ***str)
+int		tetro_checker(char ***str, int i, int j)
 {
 	int		b;
-	int		i;
-	int		j;
 	int		k;
 
 	b = 0;
-	i = 0;
-	j = 0;
 	k = 0;
 	while (str[b] != 0)
 	{
@@ -58,7 +54,7 @@ int		tetro_checker(char ***str)
 			while (str[b][i][j] != 0)
 			{
 				if (str[b][i][j] >= 65 && str[b][i][j] <= 90)
-					k+= validate_tetro(str[b], i, j);
+					k += validate_tetro(str[b], i, j);
 				j++;
 			}
 			j = 0;

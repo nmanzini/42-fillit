@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 17:26:42 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/28 18:31:58 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/28 19:53:15 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,37 +46,6 @@ char	***gen_matrices(int size, int m, int n, char c)
 }
 
 /*
-** take a list of matrices as input and prints them
-*/
-
-/*
-**int		print_matrices(char ***matrix)
-**{
-**	int b;
-**	int i;
-**
-**	b = 0;
-**	i = 0;
-**	ft_putchar('\n');
-**	while (matrix[b] != 0)
-**	{
-**		while (matrix[b][i] != 0)
-**		{
-**			ft_putendl(matrix[b][i]);
-**			i++;
-**		}
-**		b++;
-**		i = 0;
-**		ft_putchar('\n');
-**	}
-**	ft_putendl("+----+");
-**	ft_putendl("|DONE|");
-**	ft_putendl("+----+");
-**	return (0);
-**}
-*/
-
-/*
 ** take a lsit of matrices and a list of strings
 */
 
@@ -104,7 +73,6 @@ int		fill_matrices(char ***matrix, char **str)
 		b++;
 		i = 0;
 	}
-	//free_row(str);
 	return (0);
 }
 

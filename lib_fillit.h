@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 13:12:47 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/28 17:53:52 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/28 19:42:36 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ char	***set_up(char *path);
 ** matrices.c
 */
 char	***gen_matrices(int size, int m, int n, char c);
-/*
-**int		print_matrices(char ***matrix);
-*/
+
+int		print_matrices(char ***matrix);
+
 int		fill_matrices(char ***matrix, char **str);
 int		clean_row_matrices(char ***matrix);
 int		clean_single_column(char ***matrix, int b, int i, int j);
@@ -57,5 +57,10 @@ int		insert_checker(char **row, char **tetra, int x, int y);
 int		insert_check_complete(char **row, char **tetra, int x, int y);
 int		bfs_big_fucking_solver(char **row, char ***tetra, int b);
 int		solve(char ***matrix);
+/*
+** tetro_checker.c
+*/
+int		validate_tetro(char **str, int i, int j);
+int		tetro_checker(char ***str, int i, int j);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/28 18:32:00 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/28 19:53:07 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int		input_length(char *path)
 	int		ret;
 	char	*buf;
 	int		counter;
+	int		old_ret;
 
 	counter = 0;
 	fd = open(path, O_RDONLY);
@@ -75,10 +76,13 @@ int		input_length(char *path)
 	buf = ft_strnew(21);
 	while ((ret = read(fd, buf, 21)))
 	{
-		if (block_validator(buf))
+		if (block_validator(buf) || ret < 20)
 			return (0);
 		counter++;
+		old_ret = ret;
 	}
+	if (old_ret != 20)
+		return (0);
 	free(buf);
 	if (close(fd) == -1)
 		return (0);
@@ -120,19 +124,13 @@ char	**input_strings(char *path, int size)
 }
 
 /*
-** takes a list of strings as input
-** prints every string till the 0 memeber in the list;
+** returns an error
 */
 
-int		print_strings(char **str)
+char	***return_error(void)
 {
-	ft_putchar('\n');
-	while (*str != 0)
-	{
-		ft_putstr(*str);
-		str++;
-	}
-	return (0);
+	ft_putendl("error");
+	return (NULL);
 }
 
 /*
@@ -146,37 +144,19 @@ char	***set_up(char *path)
 	char	**str;
 
 	size = 0;
-	// ft_putendl("reading, calculating length and validating");
 	size = input_length(path);
 	if (!size)
-	{
-		ft_putendl("ERROR in reading or validating");
-		return (NULL);
-	}
-	// ft_putstr("number of blocks = ");
-	// ft_putnbr(size);
-	// ft_putchar('\n');
+		return (return_error());
 	str = input_strings(path, size);
 	if (!str)
-	{
-		ft_putendl("ERROR in moving to string input");
-		return (NULL);
-	}
-	// ft_putendl("generating matrices");
+		return (return_error());
 	matrix = gen_matrices(size, 4, 4, '.');
 	if (!matrix)
-	{
-		ft_putendl("ERROR can't make the matrix");
-		return (NULL);
-	}
-	// ft_putendl("filling matrices");
+		return (return_error());
 	fill_matrices(matrix, str);
-	// ft_putendl("cleaning rows matrices");
+	if (tetro_checker(matrix, 0, 0) == 0)
+		return (return_error());
 	clean_row_matrices(matrix);
-	// ft_putendl("cleaning columns matrices");
 	clean_column_matrices(matrix);
-	// ft_putendl("printing cleaned matrices");
-	// print_matrices(matrix);
-	// ft_putendl("END OF SETUP");
 	return (matrix);
 }
