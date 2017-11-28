@@ -10,7 +10,7 @@ will take a file as parameter, which contains a list of Tetriminos, and arrange 
 in order to create the smallest square possible.
 
 ## Input Sample:
-
+'''
 ...#
 ...#
 ...#
@@ -50,5 +50,6 @@ in order to create the smallest square possible.
 ###.
 .#..
 ....
+'''
 
 ## Input Sample:
