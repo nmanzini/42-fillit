@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 16:34:15 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/28 11:52:47 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/28 13:59:52 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		ft_floor_sqrt(int value)
 				return (i);
 			i++;
 		}
-		value--;
+		value++;
 	}
 	return (0);
 }
@@ -53,7 +53,7 @@ int		num_tetra(char ***tetra)
 ** every row zero terminated, and last row equal to NULL;
 */
 
-char	**gen_grid(int m, int n, char c)
+char	**gen_row(int m, int n, char c)
 {
 	int		i;
 	int		j;
@@ -76,14 +76,15 @@ char	**gen_grid(int m, int n, char c)
 }
 
 /*
-** prints a grid or matrix of any size
+** prints a row or matrix of any size
 */
 
-int		print_grid(char **row)
+int		print_row(char **row)
 {
 	int i;
 
 	i = 0;
+	ft_putchar(10);
 	while (row[i] != 0)
 	{
 		ft_putendl(row[i]);
@@ -93,11 +94,11 @@ int		print_grid(char **row)
 }
 
 /*
-** insert a certain tetra ina a grid at a certain slot
+** insert a certain tetra ina a row at a certain slot
 ** avoiding the '.' part of the tetra
 */
 
-int		insert_tetra_grid(char **row, char **tetra, int x, int y)
+int		insert_tetra_row(char **row, char **tetra, int x, int y)
 {
 	int i;
 	int j;
@@ -119,6 +120,34 @@ int		insert_tetra_grid(char **row, char **tetra, int x, int y)
 	}
 	return (0);
 }
+
+/*
+** cleans up a mistake we did before
+*/
+
+int		clean_tetra_row(char **row, char **tetra, int x, int y)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (tetra[i] != 0)
+	{
+		while (tetra[i][j] != 0)
+		{
+			if (tetra[i][j] != '.')
+			{
+				row[x + i][y + j] = '.';
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	return (0);
+}
+
 
 int		insert_checker(char **row, char **tetra, int x, int y)
 {
@@ -149,26 +178,54 @@ int		insert_checker(char **row, char **tetra, int x, int y)
 
 int		insert_check_complete(char **row, char **tetra, int x, int y)
 {
-	ft_putendl("cheking insertion of tetra in grid");
+	ft_putendl("cheking insertion of tetra in row");
 	if (insert_checker(row, tetra, x, y))
 	{
 		ft_putendl("Passed");
-		insert_tetra_grid(row, tetra, x, y);
+		insert_tetra_row(row, tetra, x, y);
 	}
 	else
 		ft_putendl("Not possible");
 	return (0);
 }
 
-int BFS_big_fucking_solver(char **row, char ***tetra)
+
+
+int BFS_big_fucking_solver(char **row, char ***tetra, int b)
 {
-	
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	if (tetra[b] == 0)
+		return (0);
+	while (row[i] != 0)
+	{
+		while (row[i][j] != 0)
+		{
+			if (insert_checker(row,  tetra[b],  i,  j))
+			{
+				insert_tetra_row(row, tetra[b], i, j);
+				print_row(row);
+				if (!BFS_big_fucking_solver(row, tetra, ++b))
+				{
+					return(0);
+				}
+				clean_tetra_row(row, tetra[--b], i, j);
+			}
+			j++;
+		}
+		i++;
+		j = 0;
+	}
+	return (1);
 }
 
 int		solve(char ***tetra)
 {
 	int		min_size;
-	char	**grid;
+	char	**row;
 
 	ft_putendl("START of solve");
 	min_size = ft_floor_sqrt(num_tetra(tetra) * 4);
@@ -176,15 +233,21 @@ int		solve(char ***tetra)
 	ft_putendl(" = num of blocks");
 	ft_putnbr(min_size);
 	ft_putendl(" = minimum side size of solution square");
-	ft_putendl("Generating solution grid of size min_size");
-	grid = gen_grid(min_size, min_size, '.');
-	ft_putendl("Printing said grid");
-	print_grid(grid);
-	insert_check_complete(grid, tetra[0], 0, 0);
-	print_grid(grid);
-	insert_check_complete(grid, tetra[1], 0, 1);
-	print_grid(grid);
-	insert_check_complete(grid, tetra[2], 1, 1);
-	print_grid(grid);
+	ft_putendl("Generating solution row of size min_size");
+	row = gen_row(min_size, min_size, '.');
+	ft_putendl("Printing said row");
+
+	while (BFS_big_fucking_solver(row,tetra,0))
+	{
+		min_size++;
+		row = gen_row(min_size, min_size, '.');
+		BFS_big_fucking_solver(row,tetra,0);
+		// remember to free row memory when you create a new one
+	}
+	print_row(row);
+
+
+
+	print_row(row);
 	return (0);
 }
