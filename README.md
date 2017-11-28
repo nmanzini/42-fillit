@@ -1,5 +1,7 @@
 # 42-fillit
  This is the story of a piece of Tetris, one little square and a dev walk into a bar...
+ ![Matrix Notation](http://meatfighter.com/tetrisprinteralgorithm/rotations.png)
+ 
 
 ## Description
 
@@ -89,4 +91,4 @@ The matrices starts at zero and the standard naming system is used (as shown in 
 
 # Example
 
-![Alt text](How_To.png?raw=true "Title")
+![How to guide](How_To.png?raw=true "How to run the program")
