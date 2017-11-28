@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 16:34:15 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/28 13:59:52 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/28 16:13:37 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,6 @@ int BFS_big_fucking_solver(char **row, char ***tetra, int b)
 			if (insert_checker(row,  tetra[b],  i,  j))
 			{
 				insert_tetra_row(row, tetra[b], i, j);
-				print_row(row);
 				if (!BFS_big_fucking_solver(row, tetra, ++b))
 				{
 					return(0);
@@ -227,7 +226,7 @@ int		solve(char ***tetra)
 	int		min_size;
 	char	**row;
 
-	ft_putendl("START of solve");
+	// ft_putendl("START of solve");
 	min_size = ft_floor_sqrt(num_tetra(tetra) * 4);
 	ft_putnbr(num_tetra(tetra));
 	ft_putendl(" = num of blocks");
@@ -235,19 +234,17 @@ int		solve(char ***tetra)
 	ft_putendl(" = minimum side size of solution square");
 	ft_putendl("Generating solution row of size min_size");
 	row = gen_row(min_size, min_size, '.');
-	ft_putendl("Printing said row");
+	ft_putnbr(min_size);
+	ft_putendl(" size");
 
 	while (BFS_big_fucking_solver(row,tetra,0))
 	{
 		min_size++;
+		ft_putnbr(min_size);
+		ft_putendl(" size");
 		row = gen_row(min_size, min_size, '.');
-		BFS_big_fucking_solver(row,tetra,0);
 		// remember to free row memory when you create a new one
 	}
-	print_row(row);
-
-
-
 	print_row(row);
 	return (0);
 }

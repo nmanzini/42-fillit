@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 14:46:36 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/11/28 11:49:53 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/11/28 16:07:55 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,37 +325,37 @@ char	***set_up(char *path)
 	char	**str;
 
 	size = 0;
-	ft_putendl("reading, calculating length and validating");
+	// ft_putendl("reading, calculating length and validating");
 	size = input_length(path);
 	if (!size)
 	{
 		ft_putendl("ERROR in reading or validating");
 		return (NULL);
 	}
-	ft_putstr("number of blocks = ");
-	ft_putnbr(size);
-	ft_putchar('\n');
+	// ft_putstr("number of blocks = ");
+	// ft_putnbr(size);
+	// ft_putchar('\n');
 	str = input_strings(path, size);
 	if (!str)
 	{
 		ft_putendl("ERROR in moving to string input");
 		return (NULL);
 	}
-	ft_putendl("generating matrices");
+	// ft_putendl("generating matrices");
 	matrix = gen_matrices(size, 4, 4, '.');
 	if (!matrix)
 	{
 		ft_putendl("ERROR can't make the matrix");
 		return (NULL);
 	}
-	ft_putendl("filling matrices");
+	// ft_putendl("filling matrices");
 	fill_matrices(matrix, str);
-	ft_putendl("cleaning rows matrices");
+	// ft_putendl("cleaning rows matrices");
 	clean_row_matrices(matrix);
-	ft_putendl("cleaning columns matrices");
+	// ft_putendl("cleaning columns matrices");
 	clean_column_matrices(matrix);
-	ft_putendl("printing cleaned matrices");
+	// ft_putendl("printing cleaned matrices");
 	print_matrices(matrix);
-	ft_putendl("END OF SETUP");
+	// ft_putendl("END OF SETUP");
 	return (matrix);
 }
